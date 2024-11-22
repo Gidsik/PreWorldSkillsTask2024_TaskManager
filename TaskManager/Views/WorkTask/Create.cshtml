@@ -1,0 +1,57 @@
+﻿@using TaskManager.Models.ViewModels.WorkTasks
+@model CreateWorkTaskViewModel
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>WorkTask New</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label class="control-label">Name</label>
+				<input asp-for="WorkTaskName" class="form-control" value="New task name..." />
+				<span asp-validation-for="WorkTaskName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Description</label>
+				<textarea type="text" asp-for="WorkTaskDescription" class="form-control" value="New task description..."></textarea>
+				<span asp-validation-for="WorkTaskDescription" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Status</label>
+				@Html.DropDownList("StatusId", new SelectList(Model.Statuses, "Id", "Name"), new { @class = "form-control" })
+				<span asp-validation-for="StatusId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Category</label>
+				@Html.DropDownList("CategoryId", new SelectList(Model.Categories, "Id", "Name"), new { @class = "form-control" })
+				<span asp-validation-for="CategoryId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Assignee</label>
+				@Html.DropDownList("AssigneeId", new SelectList(Model.Users, "Id", "Login"), "choose assignee", new { @class = "form-control" })
+				<span asp-validation-for="AssigneeId" class="text-danger"></span>
+				
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

@@ -1,0 +1,96 @@
+﻿@using TaskManager.Models.ViewModels.WorkTasks
+@model EditWorkTaskViewModel
+
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>WorkTask #@Model.WorkTask.Id</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="WorkTask.Name" class="control-label"></label>
+				@if (User.IsInRole("Admin"))
+				{
+					<input asp-for="WorkTaskName" class="form-control" value="@Model.WorkTask.Name" />
+					<span asp-validation-for="WorkTaskName" class="text-danger"></span>
+				}
+				else
+				{
+					<p class="form-control m-0">@Model.WorkTaskName</p>
+				}
+			</div>
+			<div class="form-group">
+				<label asp-for="WorkTaskDescription" class="control-label"></label>
+				@if (User.IsInRole("Admin"))
+				{
+					<textarea type="text" asp-for="WorkTaskDescription" class="form-control" value="@Model.WorkTask.Description"></textarea>
+					<span asp-validation-for="WorkTaskDescription" class="text-danger"></span>
+				}
+				else
+				{
+					<textarea class="form-control m-0" disabled="disabled">@Model.WorkTaskDescription</textarea>
+				}
+			</div>
+			<div class="form-group">
+				<label asp-for="WorkTask.Status" class="control-label"></label>
+				@Html.DropDownList("StatusId", new SelectList(Model.Statuses, "Id", "Name"), new { @class = "form-control" })
+				<span asp-validation-for="StatusId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="WorkTask.Category" class="control-label"></label>
+				@if (User.IsInRole("Admin"))
+				{
+					@Html.DropDownList("CategoryId", new SelectList(Model.Categories, "Id", "Name"), new { @class = "form-control" })
+					<span asp-validation-for="CategoryId" class="text-danger"></span>
+				}
+				else
+				{
+					<p class="form-control m-0">@Model.WorkTask!.Category!.Name</p>
+				}
+			</div>
+			<div class="form-group">
+				<label asp-for="WorkTask.Creator" class="control-label"></label>
+				<p class="form-control m-0">@Model.WorkTask.Creator.Login</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="WorkTask.Created" class="control-label"></label>
+				<p class="form-control m-0">@Model.WorkTask.Created</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="WorkTask.Assignee" class="control-label"></label>
+				@if (User.IsInRole("Admin"))
+				{
+					@Html.DropDownList("AssigneeId", new SelectList(Model.Users, "Id", "Login"), "choose assignee", new { @class = "form-control" })
+					<span asp-validation-for="AssigneeId" class="text-danger"></span>
+				}
+				else
+				{
+					<p class="form-control m-0">@Model.WorkTask!.Assignee!.Login</p>
+				}
+			</div>
+			<div class="form-group">
+				<label asp-for="WorkTask.Finished" class="control-label"></label>
+				<p class="form-control m-0">@Model.WorkTask.Finished</p>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

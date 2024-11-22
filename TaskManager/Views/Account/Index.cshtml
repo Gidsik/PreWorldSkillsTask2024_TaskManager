@@ -1,0 +1,49 @@
+﻿@model List<User>
+@{
+	ViewData["Title"] = "Users";
+}
+
+@using (Html.BeginForm("Index", "Account", FormMethod.Get))
+{
+	<div class="form-group col d-flex p-3">
+		<label class="row-sm-3 col-form-label m-1">Поиск:</label>
+		<input class="flex-fill m-1" type="text" name="searchQuery" value="@ViewBag.SearchQuery" />
+		<input type="submit" value="Применить" class="btn btn-outline-primary m-1" />
+	</div>
+}
+
+<a asp-action="Create" class="btn btn-primary">Create</a>
+
+<div class="container">
+	<h1>WorkTasks</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					Id
+				</th>
+				<th>
+					Login
+				</th>
+				<th>
+					Role
+				</th>
+				<th/>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var user in Model)
+			{
+				<tr>
+					<td>@user.Id</td>
+					<td>@user.Login</td>
+					<td>@user.Role?.Name</td>
+					<td>
+						<a asp-action="Edit" asp-controller="Account" asp-route-id="@user.Id" asp>Edit</a>
+						<a asp-action="Delete" asp-controller="Account" asp-route-id="@user.Id" asp>Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
